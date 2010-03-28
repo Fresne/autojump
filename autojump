@@ -156,7 +156,7 @@ else:
         is_bash = True
 
     if not args:
-        patterns = ""
+        patterns = []
     else:
         patterns = args[0:]
 
@@ -174,12 +174,14 @@ else:
                 patterns[-1] = endmatch.group(1)
 
         dirs = path_dict.items()
-        dirs.sort(key=lambda e:e[1], reverse=True)
+        dirs.sort(key=lambda e: e[1], reverse=True)
 
         find_matches(dirs, patterns, path_dict, results, re_flags=0, max_matches=9)
 
+        results.sort(lambda a, b: len(a) - len(b))
+
         dirs = path_dict.items() #we need to recreate the list since the first iteration potentially deletes paths
-        dirs.sort(key=lambda e:e[1], reverse=True)
+        dirs.sort(key=lambda e: e[1], reverse=True)
 
         if completion or not results: #if not found, try ignoring case. On completion always show all results
             find_matches(dirs, patterns, path_dict, results, re_flags=re.IGNORECASE, max_matches=9)
